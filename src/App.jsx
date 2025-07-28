@@ -58,13 +58,38 @@ export default function App(){
     return <p>A network error was encountered.</p>
   }
 
+  function generateDisplayedIds(){
+    const newIds = new Set();
+    const numIdsToDisplay = 10;
+    const numClickedIdsToDisplay = Math.min(8, clickedIds.length);
+    while (fetchedUrlObjs.length - clickedIds.length <= numIdsToDisplay-numClickedIdsToDisplay) {
+      fetchImage();
+    }
+    const clickedUrlObjs = fetchedUrlObjs.filter((obj) => clickedIds.includes(obj.id));
+    const notClickedUrlObjs = fetchedUrlObjs.filter((obj) => !clickedIds.includes(obj.id));
+    while (newIds.size < numClickedIdsToDisplay) {
+      const randomIdClicked = Math.floor(Math.random() * clickedUrlObjs.length);
+      newIds.add(fetchedUrlObjs[randomId].id);
+    }
+    while (newIds.size < numIdsToDisplay) {
+      const randomIdNotClicked = Math.floor(Math.random() * clickedUrlObjs.length);
+      newIds.add(fetchedUrlObjs[randomId].id);
+    }
+    setDisplayedIds(Array.from(newIds));
+  }
+
+  generateDisplayedIds();
+
+  const displayedUrlObjs = fetchedUrlObjs.filter((obj) => displayedIds.contains(obj.id));
+  displayedUrlObjs.sort(() => Math.random() - 0.5);
+  console.log(displayedUrlObjs);
+
   return (
     <div>
       <h1>Memory Game</h1>
       <p>This is a simple React application.</p>
       <button onClick={fetchImage}>Fetch Image</button>
-      <Card/>
-      <Card/>
+      {displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} />))}
     </div>
   )
 }
