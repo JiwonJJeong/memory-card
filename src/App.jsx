@@ -15,42 +15,49 @@ export default function App(){
   const [displayedIds, setDisplayedIds] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
-    async function fetchImage(newId){
+    async function fetchAllImages() {
       setLoading(true);
       setError(null);
   
-      console.log(`New ID fetched: ${newId}`);
-      fetch(`${apiStart}${newId}`, { mode: "cors" })
-        .then((response) => {
-          if (response.status >= 400) {
-            throw new Error("server error");
-          }
-          return response.json();
-        })
-        .then((response) => {
-          const updatedFetchUrlObjs = [...fetchedUrlObjs.current, {id: newId, src: response.sprites.front_default, name: response.name}]
-          fetchedUrlObjs.current = updatedFetchUrlObjs;
-          })
-        .catch((error) => {
-          setError(error)
-          console.error("Error fetching image:", error);
-    })
-        .finally(() => 
-          {
-            setLoading(false);
-          });
-    };
-
-    displayedIds.map((id) => {
-      if (!fetchedUrlObjs.current.some((obj) => obj.id === id)) {
-        fetchImage(id);
+      try {
+        // Create an array of promises for IDs that need to be fetched
+        const fetchPromises = displayedIds
+          .filter((id) => !fetchedUrlObjs.current.some((obj) => obj.id === id))
+          .map((id) => fetchImage(id));
+  
+        // Wait for all fetches to complete
+        await Promise.all(fetchPromises);
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching images:", error);
+      } finally {
+        setLoading(false);
       }
-    })
-
-  }, [displayedIds])
+    }
+  
+    fetchAllImages();
+  }, [displayedIds]);
+  
+  async function fetchImage(newId) {
+    try {
+      console.log(`New ID fetched: ${newId}`);
+      const response = await fetch(`${apiStart}${newId}`, { mode: "cors" });
+  
+      if (response.status >= 400) {
+        throw new Error("server error");
+      }
+  
+      const data = await response.json();
+      const updatedFetchUrlObjs = [
+        ...fetchedUrlObjs.current,
+        { id: newId, src: data.sprites.front_default, name: data.name },
+      ];
+      fetchedUrlObjs.current = updatedFetchUrlObjs;
+    } catch (error) {
+      setError(error);
+      console.error("Error fetching image:", error);
+    }
+  }
 
   function generateDisplayedIds(){
 
@@ -84,6 +91,7 @@ export default function App(){
 
   function resetGame(){
     clickedIds.current = [];
+    generateDisplayedIds();
   }
 
   function handleClick(id){
@@ -105,7 +113,7 @@ export default function App(){
   }
 
   let displayedUrlObjs;
-  if (!loading && !error){
+  if (!loading ){
     displayedUrlObjs = fetchedUrlObjs.current.filter((obj) => displayedIds.includes(obj.id));
     displayedUrlObjs.sort(() => Math.random() - 0.5);
     console.log(displayedUrlObjs);
