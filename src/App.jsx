@@ -2,9 +2,9 @@ import Card from "./Card.jsx";
 import {useState, useEffect, useRef} from "react";
 
 export default function App(){
-  const [clickedIds, setClickedIds] = useState([]);
-  const [fetchedUrlObjs, setFetchedUrlObjs] = useState([]);
-  const [displayedIds, setDisplayedIds] = useState([]);
+  const fetchedUrlObjs = useRef([]);
+  const clickedIds = useRef([]);
+
   const remainingIds = useRef(Array.from({length: 1025}, (_, i) => i + 1));
 
   const [error, setError] = useState(null);
@@ -12,44 +12,90 @@ export default function App(){
   
   const apiStart = "https://pokeapi.co/api/v2/pokemon/";
 
-  useEffect(() => {
-    setLoading(false);
-  }, [])
+  const [displayedIds, setDisplayedIds] = useState([]);
 
-  async function fetchImage(){
+  useEffect(() => {
     setLoading(true);
     setError(null);
+
+    async function fetchImage(newId){
+      setLoading(true);
+      setError(null);
+  
+      console.log(`New ID fetched: ${newId}`);
+      fetch(`${apiStart}${newId}`, { mode: "cors" })
+        .then((response) => {
+          if (response.status >= 400) {
+            throw new Error("server error");
+          }
+          return response.json();
+        })
+        .then((response) => {
+          const updatedFetchUrlObjs = [...fetchedUrlObjs.current, {id: newId, src: response.sprites.front_default, name: response.name}]
+          fetchedUrlObjs.current = updatedFetchUrlObjs;
+          })
+        .catch((error) => {
+          setError(error)
+          console.error("Error fetching image:", error);
+    })
+        .finally(() => 
+          {
+            setLoading(false);
+          });
+    };
+
+    displayedIds.map((id) => {
+      if (!fetchedUrlObjs.current.some((obj) => obj.id === id)) {
+        fetchImage(id);
+      }
+    })
+
+  }, [displayedIds])
+
+  function generateDisplayedIds(){
 
     function getRandomRemainingId(){
       if (remainingIds.current.length === 0 ){
         throw new Error("No more IDs available to fetch");
       }
       const newIdIndex = Math.random()*remainingIds.current.length;
-      const newId = remainingIds.current.splice(newIdIndex, newIdIndex + 1)[0];
+      const newId = remainingIds.current.splice(newIdIndex, 1)[0];;
       return newId;
     }
 
+    const newIds = new Set();
+    const numIdsToDisplay = 10;
+    const numClickedIdsToDisplay = Math.min(8, clickedIds.current.length);
+    while (newIds.size < numClickedIdsToDisplay) {
+      const randomIdClicked = Math.floor(Math.random() * clickedIds.length);
+      newIds.add(fetchedUrlObjs[randomIdClicked].id);
+    }
+    while (newIds.size < numIdsToDisplay) {
+      const randomIdNotClicked = getRandomRemainingId();
+      newIds.add(randomIdNotClicked);
+    }
+    setDisplayedIds(Array.from(newIds));
+  }
 
-    const newId = getRandomRemainingId();
-    console.log(`New ID fetched: ${newId}`);
-    fetch(`${apiStart}${newId}`, { mode: "cors" })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("server error");
-        }
-        return response.json();
-      })
-      .then((response) => {
-        const updatedFetchUrlObjs = [...fetchedUrlObjs, {id: newId, src: response.sprites.front_default, name: response.name}]
-        console.log(updatedFetchUrlObjs);
-        setFetchedUrlObjs(updatedFetchUrlObjs);
-        })
-      .catch((error) => setError(error))
-      .finally(() => 
-        {
-          setLoading(false);
-        });
-  };
+  useEffect(() => {
+    generateDisplayedIds();
+    return resetGame();
+  }, []);
+
+  function resetGame(){
+    clickedIds.current = [];
+  }
+
+  function handleClick(id){
+    if (clickedIds.current.includes(id)) {
+      alert("You already clicked this card!");
+      return;
+    } else{
+      alert("Awesome job! This is a new card");
+    }
+    clickedIds.current.push(id);
+    generateDisplayedIds();
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -58,38 +104,20 @@ export default function App(){
     return <p>A network error was encountered.</p>
   }
 
-  function generateDisplayedIds(){
-    const newIds = new Set();
-    const numIdsToDisplay = 10;
-    const numClickedIdsToDisplay = Math.min(8, clickedIds.length);
-    while (fetchedUrlObjs.length - clickedIds.length <= numIdsToDisplay-numClickedIdsToDisplay) {
-      fetchImage();
-    }
-    const clickedUrlObjs = fetchedUrlObjs.filter((obj) => clickedIds.includes(obj.id));
-    const notClickedUrlObjs = fetchedUrlObjs.filter((obj) => !clickedIds.includes(obj.id));
-    while (newIds.size < numClickedIdsToDisplay) {
-      const randomIdClicked = Math.floor(Math.random() * clickedUrlObjs.length);
-      newIds.add(fetchedUrlObjs[randomId].id);
-    }
-    while (newIds.size < numIdsToDisplay) {
-      const randomIdNotClicked = Math.floor(Math.random() * clickedUrlObjs.length);
-      newIds.add(fetchedUrlObjs[randomId].id);
-    }
-    setDisplayedIds(Array.from(newIds));
+  let displayedUrlObjs;
+  if (!loading && !error){
+    displayedUrlObjs = fetchedUrlObjs.current.filter((obj) => displayedIds.includes(obj.id));
+    displayedUrlObjs.sort(() => Math.random() - 0.5);
+    console.log(displayedUrlObjs);
   }
 
-  generateDisplayedIds();
-
-  const displayedUrlObjs = fetchedUrlObjs.filter((obj) => displayedIds.contains(obj.id));
-  displayedUrlObjs.sort(() => Math.random() - 0.5);
-  console.log(displayedUrlObjs);
 
   return (
     <div>
       <h1>Memory Game</h1>
       <p>This is a simple React application.</p>
-      <button onClick={fetchImage}>Fetch Image</button>
-      {displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} />))}
+      <button onClick={resetGame}>Reset Game</button>
+      {displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
     </div>
   )
 }
