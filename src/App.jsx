@@ -72,14 +72,15 @@ export default function App(){
 
     const newIds = new Set();
     const numIdsToDisplay = 10;
-    const numClickedIdsToDisplay = Math.min(8, clickedIds.current.length);
-    while (newIds.size < numClickedIdsToDisplay) {
-      const randomIdClicked = Math.floor(Math.random() * clickedIds.length);
-      newIds.add(fetchedUrlObjs[randomIdClicked].id);
+    const numIdsRepeats = 9;
+    // pull 9 random ids from fetchedUrlObjs and 1 new random ids
+    while (newIds.size < numIdsRepeats && fetchedUrlObjs.current.length > 0) {  
+      const randomId = fetchedUrlObjs.current[Math.floor(Math.random() * fetchedUrlObjs.current.length)].id;
+      newIds.add(randomId);
     }
     while (newIds.size < numIdsToDisplay) {
-      const randomIdNotClicked = getRandomRemainingId();
-      newIds.add(randomIdNotClicked);
+      const randomIdNotFetched = getRandomRemainingId();
+      newIds.add(randomIdNotFetched);
     }
     setDisplayedIds(Array.from(newIds));
   }
@@ -91,6 +92,7 @@ export default function App(){
 
   function resetGame(){
     clickedIds.current = [];
+    setDisplayedIds([]);
     generateDisplayedIds();
   }
 
