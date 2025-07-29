@@ -98,10 +98,9 @@ export default function App(){
 
   function handleClick(id){
     if (clickedIds.current.includes(id)) {
-      alert("You already clicked this card!");
+      alert("You already clicked this card! You lose D:");
+      resetGame();
       return;
-    } else{
-      alert("Awesome job! This is a new card");
     }
     clickedIds.current.push(id);
     generateDisplayedIds();
@@ -126,6 +125,7 @@ export default function App(){
     <div>
       <h1>Memory Game</h1>
       <p>This is a simple React application.</p>
+      <p>Score: {clickedIds.current.length}</p>
       <button onClick={resetGame}>Reset Game</button>
       {displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
     </div>
