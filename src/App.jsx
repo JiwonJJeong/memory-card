@@ -92,7 +92,7 @@ export default function App(){
 
   function resetGame(){
     clickedIds.current = [];
-    setDisplayedIds([]);
+    fetchedUrlObjs.current = [];
     generateDisplayedIds();
   }
 
