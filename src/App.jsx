@@ -122,8 +122,8 @@ export default function App(){
 
   return (
     <div>
-      <h1>Memory Game</h1>
-      <p>This is a simple React application.</p>
+      <h1>PokeMemory Game</h1>
+      <p>Don't click a pokemon twice!</p>
       <p>Score: {clickedIds.current.length}</p>
       <button onClick={resetGame}>Reset Game</button>
       {loading && Array.from({length:10}, (_,i) => (<LoadingCard key={i}/>))}
