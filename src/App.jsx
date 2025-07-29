@@ -1,4 +1,5 @@
 import Card from "./Card.jsx";
+import LoadingCard from "./LoadingCard.jsx";
 import {useState, useEffect, useRef} from "react";
 
 export default function App(){
@@ -93,6 +94,7 @@ export default function App(){
   function resetGame(){
     clickedIds.current = [];
     fetchedUrlObjs.current = [];
+    remainingIds.current = Array.from({length: 1025}, (_, i) => i + 1);
     generateDisplayedIds();
   }
 
@@ -106,9 +108,6 @@ export default function App(){
     generateDisplayedIds();
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
   if (error){
     return <p>A network error was encountered.</p>
   }
@@ -127,7 +126,8 @@ export default function App(){
       <p>This is a simple React application.</p>
       <p>Score: {clickedIds.current.length}</p>
       <button onClick={resetGame}>Reset Game</button>
-      {displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
+      {loading && Array.from({length:10}, (_,i) => (<LoadingCard key={i}/>))}
+      {!loading && displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
     </div>
   )
 }
