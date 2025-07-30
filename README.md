@@ -7,7 +7,7 @@ This is a React-based web app, where you can play a simple memory game. Rack up 
 ## Skills used
 * React framework: Used props and states to manage input data and rerendering.
 * Async code: Used useEffect hook to handle asynchronous API fetching
-* Various HTML and CSS concepts: responsive elements, media queries, CSS Flexbox and Grid
+* Various HTML and CSS concepts: responsive elements, media queries, CSS Flexbox and Grid, keyboard support
 
 ## Tech Stack
 

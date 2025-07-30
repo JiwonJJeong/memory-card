@@ -24,6 +24,10 @@ figure:hover{
     border-color: #007BFF;
 }
 
+figure:focus{
+    transform: translate(0, -2px);
+}
+
 figure:active{
     opacity: 70%;
 }
