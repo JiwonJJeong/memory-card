@@ -1,17 +1,29 @@
-# React + Vite
+# PokeMemory Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a React-based web app, where you can play a simple memory game. Rack up high scores by avoiding clicking a previously clicked pokemon. This app uses [PokeAPI](https://pokeapi.co/) to generate random pokemon.
 
-Currently, two official plugins are available:
+[Try it here!](https://memory-card-hazel-theta.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Skills used
+* React framework: Used props and states to manage input data and rerendering.
+* Async code: Used useEffect hook to handle asynchronous API fetching
+* Various HTML and CSS concepts: responsive elements, media queries, CSS Flexbox and Grid
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Technology      | Description                                      |
+|------------------|--------------------------------------------------|
+| Vite             | Front-end Toolchain|
+| React.js         | Component-based Architecture |
+| Vercel           | Deployment and Hosting       |
+
+## Major takeaways
+* Avoid creating states for values calculable from other states
+* Use refs to store data that mutates, but isn't used directly for rendering like states
+* Multiple promises (async code) can be waited for together using Promise.all(arrayOfPromises)
+* Array.from() syntax and use cases
 
 ## Attribution
 
 Thank you to Ahkâm for the [pokeball PNG](https://www.freeiconspng.com/img/45332).
-<a href="https://www.vecteezy.com/free-vector/pokemon-background">Pokemon Background Vectors by Vecteezy</a>
+Thank you to Vecteezy for the [pikachu background](https://www.vecteezy.com/free-vector/pokemon-background).
