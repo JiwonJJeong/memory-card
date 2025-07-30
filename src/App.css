@@ -1,19 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Press Start 2P', cursive;
+}
+
+
+:root{
+    background-image: url("./assets/pikachu-background.jpg");
+    background-position-y: 10%;
+    background-position-x: center;
+}
+
+div#root{
+    display:grid;
+    grid-template-rows: max-content 1fr;
+    height:100vh;
+}
+
+div.title{
+    padding: 10px;
+    padding-left: 50px;
+    padding-right:50px;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    background-color:rgb(255, 243, 177);
+    gap: 20px;
+
+    h1{
+        width:min-content;
+    }
+
+    p{
+        font-size:15px;
+        text-align:center;
+        max-width:220px;
+    }
+
+    p.score{
+        margin-left:auto;
+    }
+}
+
+
+div.outerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+}
+
 div.container{
 
     display:grid;
     grid-template-rows: max-content;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     gap: 3px;
-    min-width:min-content;
+    min-width: min-content;
+    width: 90%;
+    box-sizing:border-box;
+    max-width: 1300px;
 
-    background-color: rgb(155, 155, 255);
+    background-color: rgb(255, 160, 17);
     border-radius: 10px;
     padding: 10px;
     border: 2px black solid;
-    margin: 20px;
+
 }
 
-h1,h2,p,button,figure,img{
+body,h1,h2,p,button,figure,img{
     margin:0;
     padding:0;
+}
+
+span.title1{
+    color: #d60000
+}
+
+span.title2{
+    color: #0d23c9
 }

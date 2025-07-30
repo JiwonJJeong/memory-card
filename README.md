@@ -14,3 +14,4 @@ If you are developing a production application, we recommend using TypeScript wi
 ## Attribution
 
 Thank you to Ahkâm for the [pokeball PNG](https://www.freeiconspng.com/img/45332).
+<a href="https://www.vecteezy.com/free-vector/pokemon-background">Pokemon Background Vectors by Vecteezy</a>
