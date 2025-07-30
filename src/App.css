@@ -27,7 +27,7 @@ div.title{
     text-align: start;
     display: flex;
     align-items: center;
-    background-color:rgb(255, 243, 177);
+    background-color:#fff3bc;
     gap: 20px;
 
     h1{
@@ -65,7 +65,8 @@ div.container{
     box-sizing:border-box;
     max-width: 1300px;
 
-    background-color: rgb(255, 160, 17);
+    background-color: #ff44007c;
+    
     border-radius: 10px;
     padding: 10px;
     border: 2px black solid;
