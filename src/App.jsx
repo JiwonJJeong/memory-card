@@ -103,7 +103,7 @@ export default function App() {
 
   function handleClick(id) {
     if (clickedIds.current.includes(id)) {
-      alert("You already clicked this card! You lose D:");
+      alert(`Oops! You got a score of ${clickedIds.current.length}!`);
       resetGame();
       return;
     }
