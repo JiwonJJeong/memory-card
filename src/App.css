@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Press Start 2P', cursive;
+
 }
 
 
@@ -9,6 +10,8 @@ body {
     background-image: url("./assets/pikachu-background.jpg");
     background-position-y: 10%;
     background-position-x: center;
+    background-size:cover;
+    background-repeat: no-repeat
 }
 
 div#root{
@@ -57,7 +60,8 @@ div.container{
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     gap: 3px;
     min-width: min-content;
-    width: 90%;
+    margin:20px;
+    width: calc(100% - 40px);
     box-sizing:border-box;
     max-width: 1300px;
 
@@ -79,4 +83,28 @@ span.title1{
 
 span.title2{
     color: #0d23c9
+}
+
+@media(max-width: 800px){
+    div.title{
+        flex-direction:column;
+        text-align:center;
+        p.score{
+            margin-left:0;
+        }
+    }
+
+    div.container{
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        max-width:630px;
+    }
+
+    figure:nth-child(-n+6){
+        flex: 1 1 calc(33.33% - 10px);
+    }
+    figure:nth-child(n+7){
+        flex: 1 1 calc(25% - 10px);
+    }
 }
