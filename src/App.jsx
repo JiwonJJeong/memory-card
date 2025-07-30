@@ -1,6 +1,7 @@
 import Card from "./Card.jsx";
 import LoadingCard from "./LoadingCard.jsx";
 import {useState, useEffect, useRef} from "react";
+import "./App.css";
 
 export default function App(){
   const fetchedUrlObjs = useRef([]);
@@ -126,8 +127,10 @@ export default function App(){
       <p>Don't click a pokemon twice!</p>
       <p>Score: {clickedIds.current.length}</p>
       <button onClick={resetGame}>Reset Game</button>
-      {loading && Array.from({length:10}, (_,i) => (<LoadingCard key={i}/>))}
-      {!loading && displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
+      <div className="card container">
+        {loading && Array.from({length:10}, (_,i) => (<LoadingCard key={i}/>))}
+        {!loading && displayedUrlObjs.map((obj) => (<Card key={obj.id} src={obj.src} name={obj.name} onClick={()=>handleClick(obj.id)} />))}
+      </div>
     </div>
   )
 }
