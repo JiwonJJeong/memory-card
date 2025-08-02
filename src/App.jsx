@@ -55,6 +55,12 @@ export default function App() {
         { id: newId, src: data.sprites.front_default, name: data.name },
       ];
       fetchedUrlObjs.current = updatedFetchUrlObjs;
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = data.sprites.front_default;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
     } catch (error) {
       setError(error);
       console.error("Error fetching image:", error);
@@ -121,29 +127,6 @@ export default function App() {
     console.log(displayedUrlObjs);
   }
 
-  useEffect(() => {
-    // if done loading, preload images
-    if (!loading) {
-      const preloadImages = async () => {
-        const imagePromises = displayedUrlObjs.map((obj) => {
-          return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = obj.src;
-            img.onload = resolve;
-            img.onerror = reject;
-          });
-        });
-  
-        try {
-          await Promise.all(imagePromises);
-        } catch (error) {
-          console.error("Error preloading images:", error);
-        }
-      };
-  
-      preloadImages();
-    }
-  }, [displayedUrlObjs]);
 
   if (error) {
     return <p>A network error was encountered.</p>;
