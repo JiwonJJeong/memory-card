@@ -111,9 +111,6 @@ export default function App() {
     generateDisplayedIds();
   }
 
-  if (error) {
-    return <p>A network error was encountered.</p>;
-  }
 
   let displayedUrlObjs;
   if (!loading) {
@@ -122,6 +119,34 @@ export default function App() {
     );
     displayedUrlObjs.sort(() => Math.random() - 0.5);
     console.log(displayedUrlObjs);
+  }
+
+  useEffect(() => {
+    // if done loading, preload images
+    if (!loading) {
+      const preloadImages = async () => {
+        const imagePromises = displayedUrlObjs.map((obj) => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = obj.src;
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+        });
+  
+        try {
+          await Promise.all(imagePromises);
+        } catch (error) {
+          console.error("Error preloading images:", error);
+        }
+      };
+  
+      preloadImages();
+    }
+  }, [displayedUrlObjs]);
+
+  if (error) {
+    return <p>A network error was encountered.</p>;
   }
 
   return (
@@ -135,7 +160,7 @@ export default function App() {
         <p className="score">Score: {clickedIds.current.length}</p>
       </div>
       <div className="outerContainer">
-        <div className="card container">
+        <div className="card container" >
           {loading &&
             Array.from({ length: 10 }, (_, i) => <LoadingCard key={i} />)}
           {!loading &&
