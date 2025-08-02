@@ -105,9 +105,9 @@ span.title2{
     }
 
     figure:nth-child(-n+6){
-        flex: 1 1 calc(33.33% - 10px);
+        flex: 1 1 calc(33.33% - 9px);
     }
     figure:nth-child(n+7){
-        flex: 1 1 calc(25% - 10px);
+        flex: 1 1 calc(25% - 12px);
     }
 }
