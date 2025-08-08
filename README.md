@@ -4,10 +4,11 @@ This is a React-based web app, where you can play a simple memory game. Rack up 
 
 [Try it here!](https://memory-card-hazel-theta.vercel.app/)
 
-## Skills used
-* React framework: Used props and states to manage input data and rerendering.
-* Async code: Used useEffect hook to handle asynchronous API fetching
-* Various HTML and CSS concepts: responsive elements, media queries, CSS Flexbox and Grid, keyboard support
+## Achieved Learning Goals
+* **React framework**: Used props and states to manage input data and rerendering.
+* **Async code in React**: Used useEffect hook to handle asynchronous API fetching.
+* **Storing data in React**: Used refs to reduce difficult recomputation of rendering-independent data.
+* **Reponsive HTML**: Practiced creating responsive images and using media-queries to support all screens.
 
 ## Tech Stack
 
@@ -17,7 +18,7 @@ This is a React-based web app, where you can play a simple memory game. Rack up 
 | React.js         | Component-based Architecture |
 | Vercel           | Deployment and Hosting       |
 
-## Major takeaways
+## Personal Takeaways
 * Avoid creating states for values calculable from other states
 * Use refs to store data that mutates, but isn't used directly for rendering like states
 * Multiple promises (async code) can be waited for together using Promise.all(arrayOfPromises)
